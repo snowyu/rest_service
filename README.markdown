@@ -2,6 +2,12 @@
 
 **Welcome to the `frontier` branch. This is where we're experimenting and building the next version of Grape. Things will be civilized here one day, but until then you best carry your revolver with you.**
 
+## What is http_api?
+
+http_api is forked from Grape. 
+It's removed the unnecessary components to focus the api.
+the http_api is just a component for api.
+
 ## What is Grape?
 
 Grape is a REST-like API micro-framework for Ruby. It is built to complement
