@@ -1,10 +1,15 @@
 # Grape [![Build Status](http://travis-ci.org/intridea/grape.png?branch=frontier)](http://travis-ci.org/intridea/grape)
 
-## What is http_api?
+## What is rest_service?
 
-http_api is forked from Grape. 
-It's removed the unnecessary components to focus the api.
-the http_api is just a component for api.
+rest_service is forked from Grape.
+It's splited the modules to integrate in others framework easily.
+It's the helpers and framework for the service's api development.
+
+RestService::API is the same as Grape::API
+
+RestService::Helper
+
 
 ## What is Grape?
 

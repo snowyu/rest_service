@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'support'))
 
 $stdout = StringIO.new
 
-require 'grape'
+require 'rest_service'
 
 require 'rubygems'
 require 'bundler'

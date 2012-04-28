@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'shared/versioning_examples'
 
-describe Grape::API do
-  subject { Class.new(Grape::API) }
+describe RestService::API do
+  subject { Class.new(RestService::API) }
 
   def app; subject end
 
@@ -730,7 +730,7 @@ describe Grape::API do
       end
     end
     describe "api structure with two versions and a namespace" do
-      class TwitterAPI < Grape::API
+      class TwitterAPI < RestService::API
         # version v1
         version 'v1', :using => :path
         get "version" do
@@ -819,7 +819,7 @@ describe Grape::API do
     end
     describe "api structure with multiple methods and descriptions" do
       before(:each) do
-        class JitterAPI < Grape::API
+        class JitterAPI < RestService::API
           desc "first method"
           get "first" do; end
           get "second" do; end
@@ -835,7 +835,7 @@ describe Grape::API do
     end
     describe "api structure with multiple methods, namespaces, descriptions and options" do
       before(:each) do
-        class LitterAPI < Grape::API
+        class LitterAPI < RestService::API
           desc "first method"
           get "first" do; end
           get "second" do; end
@@ -980,7 +980,7 @@ describe Grape::API do
         subject.version 'v1', :using => :path
 
         subject.namespace :cool do
-          app = Class.new(Grape::API)
+          app = Class.new(RestService::API)
           app.get('/awesome') do
             "yo"
           end

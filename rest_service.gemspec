@@ -1,18 +1,18 @@
 $:.push File.expand_path("../lib", __FILE__)
-require "grape/version"
+require "rest_service/version"
 
 Gem::Specification.new do |s|
-  s.name        = "grape"
-  s.version     = Grape::VERSION
+  s.name        = "rest_service"
+  s.version     = RestService::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Michael Bleigh"]
   s.email       = ["michael@intridea.com"]
   s.homepage    = "https://github.com/intridea/grape"
   s.summary     = %q{A simple Ruby framework for building REST-like APIs.}
-  s.description = %q{A Ruby framework for rapid API development with great conventions.}
+  s.description = %q{A Ruby module for rapid Restful API development with great conventions.}
   s.license     = "MIT"
 
-  s.rubyforge_project = "grape"
+  s.rubyforge_project = "rest_service"
 
   s.add_runtime_dependency 'rack'
   s.add_runtime_dependency 'rack-mount'

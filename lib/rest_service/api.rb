@@ -3,12 +3,12 @@ require 'rack/auth/basic'
 require 'rack/auth/digest/md5'
 require 'logger'
 
-module Grape
-  # The API class is the primary entry point for
-  # creating Grape APIs.Users should subclass this
-  # class in order to build an API.
-  class API
-    class << self
+module RestService
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.send(:include, InstanceMethods)
+    base.class_eval do
+      #unloadable
       attr_reader :route_set
       attr_reader :versions
       attr_reader :routes
@@ -17,6 +17,16 @@ module Grape
       attr_reader :endpoints
       attr_reader :mountings
       attr_reader :instance
+    end
+  end
+  module InstanceMethods
+  end
+
+  module ClassMethods
+  end
+
+  class API
+    class << self
 
       def logger(logger = nil)
         if logger
@@ -27,7 +37,7 @@ module Grape
       end
 
       def reset!
-        @settings  = Grape::Util::HashStack.new
+        @settings  = HttpApi::Util::HashStack.new
         @route_set = Rack::Mount::RouteSet.new
         @endpoints = []
         @mountings = []
