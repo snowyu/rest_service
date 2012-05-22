@@ -320,12 +320,12 @@ describe RestService::API do
 
     it 'should set content type for txt format' do
       get '/foo'
-      last_response.headers['Content-Type'].should eql 'text/plain'
+      last_response.headers['Content-Type'].should eql 'application/json'
     end
 
-    it 'should set content type for json' do
-      get '/foo.json'
-      last_response.headers['Content-Type'].should eql 'application/json'
+    it 'should set content type for txt' do
+      get '/foo.txt'
+      last_response.headers['Content-Type'].should eql 'text/plain'
     end
 
     it 'should set content type for error' do
