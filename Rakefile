@@ -14,6 +14,9 @@ RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
+require 'cucumber/rake/task'
+Cucumber::Rake::Task.new
+
 task :spec
 task :default => :spec
 
