@@ -4,6 +4,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'support'))
 
 $stdout = StringIO.new
 
+require 'rspec'
 require 'grape'
 
 require 'rubygems'
@@ -16,6 +17,9 @@ require 'pry'
 require 'base64'
 
 require 'hashie/hash'
+
+require 'logger'
+Grape::API.logger(Logger.new('test.log'))
 
 Dir["#{File.dirname(__FILE__)}/support/*.rb"].each do |file|
   require file
