@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Grape::Middleware::Versioner::Header do
   let(:app) { lambda{|env| [200, env, env]} }
   let(:accept) { 'application/vnd.vendor-v1+json' }
+  let(:accept1) { 'application/vnd.vendor+json;version=v1.2-beta' }
+  let(:accept2) { 'application/json;version=v1.3+hotfix' }
   subject { Grape::Middleware::Versioner::Header.new(app, @options || {}) }
 
   context 'api.type and api.subtype' do
@@ -25,6 +27,16 @@ describe Grape::Middleware::Versioner::Header do
       env['api.format'].should eql 'json'
     end
 
+    it 'should be set1' do
+      env = subject.call('HTTP_ACCEPT' => accept1).last
+      env['api.format'].should eql 'json'
+    end
+    it 'should be set2' do
+      env = subject.call('HTTP_ACCEPT' => accept2).last
+      env['api.subtype'].should eql 'json'
+    end
+
+
     it 'should be nil if not provided' do
       env = subject.call('HTTP_ACCEPT' => 'application/vnd.vendor-v1').last
       env['api.format'].should eql nil
@@ -34,7 +46,7 @@ describe Grape::Middleware::Versioner::Header do
   context 'matched version' do
     before do
       @options = {
-        :versions => ['v1'],
+        :versions => ['v1', 'v1.2-beta', 'v1.3+hotfix'],
         :version_options => {:using => :header}
       }
     end
@@ -44,10 +56,24 @@ describe Grape::Middleware::Versioner::Header do
       env['api.vendor'].should eql 'vendor'
     end
 
+    it 'should set api.vendor1' do
+      env = subject.call('HTTP_ACCEPT' => accept1).last
+      env['api.vendor'].should eql 'vendor'
+    end
+
     it 'should set api.version' do
       env = subject.call('HTTP_ACCEPT' => accept).last
       env['api.version'].should eql 'v1'
     end
+    it 'should set api.version1' do
+      env = subject.call('HTTP_ACCEPT' => accept1).last
+      env['api.version'].should eql 'v1.2-beta'
+    end
+    it 'should set api.version2' do
+      env = subject.call('HTTP_ACCEPT' => accept2).last
+      env['api.version'].should eql 'v1.3+hotfix'
+    end
+
   end
 
   context 'no header' do

@@ -32,17 +32,35 @@ module Grape
           end
           accept.strip.scan(/^(.+?)\/(.+?)$/) do |type, subtype|
             env['api.type']    = type
+            subtype.scan(/([^;]*);(.*)/) do |_subtype, opts|
+              subtype = _subtype if _subtype
+              #logger.info opts
+              opts.strip.scan(/version=([\w\-\.\+]+)/) do |version,_v|
+                #logger.info "v=#{version}"
+                if (options[:versions] && !options[:versions].include?(version))
+                  Grape::API.logger.error "No such Version:#{version} in #{options[versions]}"
+                  throw :error, :status => 406, :headers => {'X-Cascade' => 'pass'}, :message => "406 API Version Not Found"
+                end
+                env['api.version'] = version
+              end
+            end
             env['api.subtype'] = subtype
 
-            subtype.scan(/vnd\.(.+)?-(.+)?\+(.*)?/) do |vendor, version, format|
+
+            subtype.scan(/vnd\.(.+?)?(?:\-(.+))?\+(\w+)/) do |vendor, version, format|
               is_vendored = options[:version_options] && options[:version_options][:vendor]
               is_vendored_match = is_vendored ? options[:version_options][:vendor] == vendor : true
 
-              if (options[:versions] && !options[:versions].include?(version)) || !is_vendored_match
+              if (version && options[:versions] && !options[:versions].include?(version)) || !is_vendored_match
+                if is_vendored_match
+                  Grape::API.logger.error "No such Version:#{version} in #{options[:versions]}"
+                else
+                  Grape::API.logger.error "No such Vender:#{vendor}. the known vendor is #{options[:version_options][:vendor]}"
+                end
                 throw :error, :status => 406, :headers => {'X-Cascade' => 'pass'}, :message => "406 API Version Not Found"
               end
 
-              env['api.version'] = version
+              env['api.version'] = version if version
               env['api.vendor']  = vendor
               env['api.format']  = format  # weird that Grape::Middleware::Formatter also does this
             end
