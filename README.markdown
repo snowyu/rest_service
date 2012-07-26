@@ -1,5 +1,7 @@
 # Grape [![Build Status](http://travis-ci.org/intridea/grape.png?branch=frontier)](http://travis-ci.org/intridea/grape)
 
+With some enhances.
+
 ## What is Grape?
 
 Grape is a REST-like API micro-framework for Ruby. It is built to complement
